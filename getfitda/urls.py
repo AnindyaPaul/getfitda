@@ -20,11 +20,7 @@ from dataaccess import views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^$',views.index,name='index'),
-    url(r'^store_user/',views.store_user,name='store_user'),
-    url(r'^user_exists/',views.user_exists,name='user_exists'),
-    url(r'^get_password/',views.get_password,name='get_password'),
-    url(r'^get_code/',views.get_code,name='get_code'),
-    url(r'^is_verified/',views.is_verified,name='is_verified'),
-    url(r'^make_verify/',views.make_verify,name='make_verify'),
+    url(r'^$',views. index,name='index'),
+    url(r'^get_user/', views.get_user, name='get_user'),
+    url(r'^set_user/',views.set_user,name='set_user'),
 ]
