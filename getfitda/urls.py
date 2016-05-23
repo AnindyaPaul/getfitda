@@ -22,5 +22,6 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$',views. index,name='index'),
     url(r'^get_user/', views.get_user, name='get_user'),
+    url(r'^get_user_by_code/', views.get_user_by_code, name='get_user_by_code'),
     url(r'^set_user/',views.set_user,name='set_user'),
 ]
