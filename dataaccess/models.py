@@ -13,3 +13,24 @@ class UserProfile(models.Model):
 
     def __unicode__(self):
         return self.username
+    
+class Category(models.Model):
+    name = models.CharField(primary_key=True, max_length=50)
+    details = models.TextField()
+    
+    def __unicode__(self):
+        return self.name
+
+class Product(models.Model):
+    id = models.CharField(primary_key=True, max_length=50)
+    name = models.CharField(max_length=50)
+    category = models.ForeignKey('Category', null=True, on_delete=models.SET_NULL)
+    price = models.FloatField()
+    count = models.IntegerField()
+    discount = models.FloatField()
+    details = models.TextField()
+    sold = models.IntegerField()
+    image = models.CharField(max_length=50)
+    
+    def __unicode__(self):
+        return self.name

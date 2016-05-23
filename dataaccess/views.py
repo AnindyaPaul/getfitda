@@ -2,7 +2,7 @@ from django.core import serializers
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
-from .models import UserProfile
+from .models import UserProfile, Product
 
 
 def index(request):
@@ -33,3 +33,16 @@ def set_user(request):
     user_profile.verified = request.POST['verified']
     user_profile.save()
     return HttpResponse("1")
+
+@csrf_exempt
+def get_products(request):
+    queryset = Product.objects.all().order_by('-sold')
+    queryset=serializers.serialize('xml',queryset)
+    return HttpResponse(queryset,content_type="application/xml")
+
+@csrf_exempt
+def get_products_by_category(request):
+    category = request.POST['category']
+    queryset = Product.objects.all().filter(category=category).order_by('-sold')
+    queryset=serializers.serialize('xml',queryset)
+    return HttpResponse(queryset,content_type="application/xml")
