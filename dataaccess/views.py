@@ -34,6 +34,14 @@ def set_user(request):
     user_profile.save()
     return HttpResponse("1")
 
+
+@csrf_exempt
+def get_product(request):
+    productid = request.POST['productid']
+    queryset = Product.objects.all().filter(id = productid)
+    queryset=serializers.serialize('xml',queryset)
+    return HttpResponse(queryset,content_type="application/xml")
+
 @csrf_exempt
 def get_products(request):
     queryset = Product.objects.all().order_by('-sold')

@@ -26,6 +26,7 @@ urlpatterns = [
     url(r'^get_user_by_code/', views.get_user_by_code, name='get_user_by_code'),
     url(r'^set_user/',views.set_user,name='set_user'),
     
+    url(r'^get_product/', views.get_product, name='get_product'),
     url(r'^get_products/', views.get_products, name='get_products'),
     url(r'^get_products_by_category/', views.get_products_by_category, name='get_products_by_category'),
 ]
