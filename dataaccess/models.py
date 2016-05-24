@@ -34,3 +34,15 @@ class Product(models.Model):
     
     def __unicode__(self):
         return self.name
+
+class Review(models.Model):
+    username = models.ForeignKey('UserProfile', null=True, on_delete = models.SET_NULL)
+    productid = models.ForeignKey('Product', null=True, on_delete = models.SET_NULL)
+    rating = models.IntegerField()
+    details = models.TextField()
+
+    class Meta:
+        unique_together = (("username", "productid"),)
+
+    def __unicode__(self):
+        return unicode(self.username)

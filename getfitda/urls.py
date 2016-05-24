@@ -29,4 +29,7 @@ urlpatterns = [
     url(r'^get_product/', views.get_product, name='get_product'),
     url(r'^get_products/', views.get_products, name='get_products'),
     url(r'^get_products_by_category/', views.get_products_by_category, name='get_products_by_category'),
+    
+    url(r'^get_reviews/', views.get_reviews, name='get_reviews'),
+    url(r'^set_review/', views.set_review, name='set_review'),
 ]
