@@ -45,4 +45,32 @@ class Review(models.Model):
         unique_together = (("username", "productid"),)
 
     def __unicode__(self):
-        return unicode(self.username)
+        return unicode(str(self.username) + " " + str(self.productid))
+
+class Cart(models.Model):
+    username = models.ForeignKey('UserProfile', null=True, on_delete = models.SET_NULL)
+    productid = models.ForeignKey('Product', null=True, on_delete = models.SET_NULL)
+    count = models.IntegerField()
+
+    class Meta:
+        unique_together = (("username", "productid"),)
+    
+    def __unicode__(self):
+        return unicode(str(self.username) + " " + str(self.productid))
+
+class Order(models.Model):
+    username = models.ForeignKey('UserProfile', null=True, on_delete = models.SET_NULL)
+    productid = models.ForeignKey('Product', null=True, on_delete = models.SET_NULL)
+    count = models.IntegerField()
+    delivstatus = models.CharField(max_length=10)
+    orderid = models.CharField(max_length=30)
+    duedate = models.CharField(max_length=30)
+    contactno = models.CharField(max_length=20)
+    address = models.CharField(max_length=100)
+    amount = models.FloatField()
+    paymentmethod = models.CharField(max_length=30)
+    paymentinfo = models.CharField(max_length=30)
+    
+    def __unicode__(self):
+        return unicode(str(self.username) + " " + str(self.productid))
+

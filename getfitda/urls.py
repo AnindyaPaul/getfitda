@@ -27,9 +27,17 @@ urlpatterns = [
     url(r'^set_user/',views.set_user,name='set_user'),
     
     url(r'^get_product/', views.get_product, name='get_product'),
+    url(r'^set_product/', views.set_product, name='set_product'),
     url(r'^get_products/', views.get_products, name='get_products'),
     url(r'^get_products_by_category/', views.get_products_by_category, name='get_products_by_category'),
     
     url(r'^get_reviews/', views.get_reviews, name='get_reviews'),
     url(r'^set_review/', views.set_review, name='set_review'),
+    
+    url(r'^get_carts/', views.get_carts, name='get_carts'),
+    url(r'^set_cart/', views.set_cart, name='set_cart'),
+    url(r'^del_carts/', views.del_carts, name='del_carts'),
+    
+    url(r'^get_orders/', views.get_orders, name='get_orders'),
+    url(r'^set_order/', views.set_order, name='set_order'),
 ]

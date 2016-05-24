@@ -2,7 +2,7 @@ from django.core import serializers
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
-from .models import UserProfile, Product, Review
+from .models import UserProfile, Product, Review, Cart, Order
 
 
 def index(request):
@@ -43,6 +43,14 @@ def get_product(request):
     return HttpResponse(queryset,content_type="application/xml")
 
 @csrf_exempt
+def set_product(request):
+    product = Product.objects.get(id=request.POST['productid'])
+    product.count = int(request.POST['count'])
+    product.sold = int(request.POST['sold'])
+    product.save()
+    return HttpResponse("1")
+
+@csrf_exempt
 def get_products(request):
     queryset = Product.objects.all().order_by('-sold')
     queryset=serializers.serialize('xml',queryset)
@@ -75,5 +83,60 @@ def set_review(request):
     review.save()
     
     return HttpResponse("1")
+
+@csrf_exempt
+def set_cart(request):
+    cart = Cart.objects.all().filter(username = request.POST['username'], productid = request.POST['productid'])
+    if cart.count() > 0:
+        cart = cart.get(username = request.POST['username'])
+        cart.count += int(request.POST['count'])
+    else:
+        cart = Cart()
+        cart.username = UserProfile.objects.get(username = request.POST['username'])
+        cart.productid = Product.objects.get(id = request.POST['productid'])
+        cart.count = int(request.POST['count'])
+    cart.save()
+    
+    return HttpResponse("1")
+
+@csrf_exempt
+def get_carts(request):
+    queryset = Cart.objects.all().filter(username = request.POST['username'])
+    queryset=serializers.serialize('xml',queryset)
+    return HttpResponse(queryset,content_type="application/xml")
+
+@csrf_exempt
+def del_carts(request):
+    carts = Cart.objects.all().filter(username=request.POST['username'])
+    for cart in carts:
+        cart.delete()
+    return HttpResponse("1")
+
+@csrf_exempt
+def set_order(request):
+    order = Order()
+    order.username = UserProfile.objects.get(username = request.POST['username'])
+    order.productid = Product.objects.get(id = request.POST['productid'])
+    order.count = request.POST['count']
+    order.delivstatus = request.POST['delivstatus']
+    order.orderid = request.POST['orderid']
+    order.duedate = request.POST['duedate']
+    order.contactno = request.POST['contactno']
+    order.address = request.POST['address']
+    order.amount = request.POST['amount']
+    order.paymentmethod = request.POST['paymentmethod']
+    order.paymentinfo = request.POST['paymentinfo']
+    order.save()
+    return HttpResponse("1")
+
+@csrf_exempt
+def get_orders(request):
+    queryset = Order.objects.all().filter(username=request.POST['username'], delivstatus=request.POST['delivstatus'])
+    queryset=serializers.serialize('xml',queryset)
+    return HttpResponse(queryset,content_type="application/xml")
+
+
+
+
 
 
