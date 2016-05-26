@@ -1,4 +1,5 @@
 from django.core import serializers
+from django.db.models.query import QuerySet
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
@@ -64,6 +65,23 @@ def get_products_by_category(request):
     return HttpResponse(queryset,content_type="application/xml")
 
 @csrf_exempt
+def get_products_by_query(request):
+    query = request.POST['query']
+    queryset1 = Product.objects.all().filter(name__icontains=query).order_by('-sold')
+    queryset2 = Product.objects.all().filter(details__icontains=query).order_by('-sold')
+    
+    queryset = list()
+    for product in queryset1:
+        if product not in queryset:
+            queryset.append(product)
+    for product in queryset2:
+        if product not in queryset:
+            queryset.append(product)
+
+    queryset=serializers.serialize('xml',queryset)
+    return HttpResponse(queryset,content_type="application/xml")
+
+@csrf_exempt
 def get_reviews(request):
     productid = request.POST['productid']
     queryset = Review.objects.all().filter(productid = productid)
@@ -110,6 +128,12 @@ def del_carts(request):
     carts = Cart.objects.all().filter(username=request.POST['username'])
     for cart in carts:
         cart.delete()
+    return HttpResponse("1")
+
+@csrf_exempt
+def del_cart(request):
+    carts = Cart.objects.all().filter(username=request.POST['username'], productid=request.POST['productid'])
+    cart = carts.get(productid=request.POST['productid']).delete()
     return HttpResponse("1")
 
 @csrf_exempt
